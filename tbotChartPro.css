@@ -1,21 +1,51 @@
 *{
-    margin:0;
+    margin: 0;
     padding:0;
     box-sizing:border-box;
-
 }
-html,body{
+html{
     width:100%;
     height:100%;
 }
 body{
-    padding:20px;
+    width:100%;
+    height:100%;
 }
-.container{
-    width:80%;
-    height:70%;
-    background-color:red;
+.chart-container{
+    margin:20px;
+    width:800px;
+    height:600px;
+    position:relative;
+    background-color:#0d0d0d;
 }
-.main-canvas{
-    background-color:#161A25;
+.chart-table{
+    width:100%;
+    height:100%;
+    border-collapse:collapse;
+}
+.main-canvas-td, .price-canvas-td{
+    height:100%;
+}
+.second-row, .time-canvas-td, .time-canvas-div,.chart-settings-td, .chart-settings-div{
+    height:28px;
+}
+.price-canvas-td,.price-canvas-div, .chart-settings-td, .chart-settings-div{
+    width:64px;
+}
+.main-canvas-div, .time-canvas-div{
+    width:100%;
+}
+.price-canvas-div, .chart-settings-div, .main-canvas-div{
+    height:100%;
+}
+.chart-settings-div{
+    width:100%;
+    background-color: #0d0d0d;
+}
+.price-canvas-div, .time-canvas-div{
+    background-color:#0d0d0d;
+}
+.position{
+    margin-top:40px;
+    position:relative;
 }
