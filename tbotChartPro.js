@@ -30,6 +30,11 @@ let cHeight = canvas.height;
 
 /////////////////////
 // Data
+let labels =[];
+labels.push({'entry':27950.00});
+labels.push({'stopLoss':27900.00});
+labels.push({'tp1':28020.00});
+labels.push({'tp2':28100.00});
 
 let thicks = []; // candlestick data
 
@@ -50,35 +55,83 @@ thicks.push({open:27944.00, close:27954.00, high:27960.00, low:27907.00});
 thicks.push({open:27936.00, close:27932.00, high:27957.00, low:27913.00});
 
 
-thicks.reverse();
+
+
+//thicks.reverse();
 //////////////////////
 // Constants
+const labelLineHeight = 1; // thick of target lines
+const labelHeight = 20; // height of target label
+const labelWidth = 80; // height of target label
+let labelColor = 'gray';
+let tpLabelColor = '';
+let stopLabelColor = '';
 
-const thicksWidth = 11; // width of candles
-const thicksGap = 6; // distance between candles
+const thicksWidth = 5; // width of candles
+const thicksGap = 3; // distance between candles
 const pinWidth = 1; // width of candle shadow
 const pricePrecision = 2; // price precision for chart and showing price
 const minStep = 0.5; // price steps for entry
 const decimalSize = 0.001; // volume steps for entry
 const yGap = 0.3; // of canvas height
-const rightGap = 0.3; // of canvas width
+const rightGap = 0.25; // of canvas width
 const gridHeight = 0.1;
 
 ////////////////////
 // Variables
-let scale = -0.001;
-let maxPrice = 28150.00;
-let minPrice = 27800.00;
+let scale = 0.005;
+let maxPrice = 28200;
+let minPrice = 27850.00;
 maxPrice = maxPrice+(maxPrice*scale);
 minPrice = minPrice-(minPrice*scale);
 let priceRange = Math.abs(maxPrice - minPrice);
 
 
 
+
+
+let drawLabels = function(){
+
+    let keyCounter =0;
+    for(let label of labels){
+
+        let typeName = Object.keys(label)[0];
+        let targetName = Object.keys(label)[0];
+        if(typeName.includes('tp')){
+            typeName = 'tp';
+        }
+        if(typeName === 'stopLoss') {
+            labelColor = '#431111';
+        }else if(typeName === 'tp') {
+            labelColor = '#1d3d14';
+
+        }else{
+            labelColor = '#1e1e1e';
+        }
+
+        let labelPosition = priceToAxis(maxPrice,minPrice,cHeight,label[targetName]);
+        context.fillStyle = labelColor;
+        context.fillRect(0,labelPosition,canvas.width,1);
+        context.fillRect(cWidth-80,labelPosition-10,80,20);
+        context.fillStyle = 'rgb(255,255,255)';
+        context.fillText('E: 100$',cWidth-60,labelPosition+4);
+
+        priceContext.fillStyle = labelColor;
+        priceContext.fillRect(0,labelPosition-10,priceCanvas.width,20);
+        priceContext.fillStyle = 'rgb(255,255,255)';
+        priceContext.fillText(label[targetName],7,labelPosition+4);
+
+
+        keyCounter++;
+    }
+}
+
+
+
 let drawThicks = function(){
     context.clearRect(0, 0, cWidth, cHeight);
     priceContext.clearRect(0, 0, priceCanvas.width, priceCanvas.height);
-    ww = thicksWidth;
+    ww = cWidth - (cWidth*rightGap);
     for (let thick of thicks){
         let highPosition = priceToAxis(maxPrice,minPrice, cHeight,thick.high);
         let lowPosition = priceToAxis(maxPrice,minPrice, cHeight,thick.low);
@@ -91,7 +144,7 @@ let drawThicks = function(){
         context.fillStyle = (thick.close>thick.open ? '#16b7a8' : '#ff504d');
         context.fillRect( ww, (thick.close>thick.open ?closePosition : openPosition),thicksWidth, bodyY);
         context.fillRect( (ww+((thicksWidth/2)-(pinWidth/2))),highPosition ,pinWidth, shadowY);
-        ww+=(thicksWidth+thicksGap);
+        ww-=(thicksWidth+thicksGap);
     }
     context.fillStyle = 'rgba(220,220,220,0.1)';
     context.fillRect(cWidth-1,0,1,cHeight);
@@ -115,55 +168,9 @@ let drawThicks = function(){
 
 
     //position data entry, stop, tp's
-
-    //for Entry
-    context.fillStyle = 'gray';
-    let entryPrice = '27959.4';
-    let entry = priceToAxis(maxPrice,minPrice,cHeight,entryPrice);
-    context.fillRect(0,entry,canvas.width,1);
-    context.fillRect(cWidth-80,entry-10,80,20);
-    context.fillStyle = 'rgb(255,255,255)';
-
-    context.fillText('E: 100$',cWidth-60,entry+4);
-    priceContext.fillStyle = 'rgba(100,100,100,1)';
-
-    priceContext.fillRect(0,entry-10,priceCanvas.width,20);
-    priceContext.fillStyle = 'rgba(100,100,100,1)';
-    priceContext.fillStyle = 'rgb(255,255,255)';
-    priceContext.fillText(entryPrice,7,entry+4);
-
-//for Tp1
-    context.fillStyle = '#1D3D14';
-    let t1Price = '28000';
-    let t1 = priceToAxis(maxPrice,minPrice,cHeight,t1Price);
-    context.fillRect(0,t1,canvas.width,1);
-    context.fillRect(cWidth-80,t1-10,80,20);
-    context.fillStyle = 'rgb(255,255,255)';
-
-    context.fillText('TP1: 0.9%',cWidth-60,t1+4);
-    priceContext.fillStyle = '#1D3D14';
-
-    priceContext.fillRect(0,t1-10,priceCanvas.width,20);
-    priceContext.fillStyle = 'rgba(100,100,100,1)';
-    priceContext.fillStyle = 'rgb(255,255,255)';
-    priceContext.fillText(t1Price,7,t1+4);
+    drawLabels();
 
 
-//for Stop
-    context.fillStyle = '#431111';
-    let stopPrice = '27899';
-    let stop = priceToAxis(maxPrice,minPrice,cHeight,stopPrice);
-    context.fillRect(0,stop,canvas.width,1);
-    context.fillRect(cWidth-80,stop-10,80,20);
-    context.fillStyle = 'rgb(255,255,255)';
-
-    context.fillText('SL: 0.8%',cWidth-60,stop+4);
-    priceContext.fillStyle = '#431111';
-
-    priceContext.fillRect(0,stop-10,priceCanvas.width,20);
-    priceContext.fillStyle = 'rgba(100,100,100,1)';
-    priceContext.fillStyle = 'rgb(255,255,255)';
-    priceContext.fillText(stopPrice,7,stop+4);
 }
 
 
@@ -175,7 +182,7 @@ drawThicks();
 let position = document.querySelector('.position');
 
 canvas.onmousemove = function(e){
-
+    //canvas.style.cursor = 'crosshair';
     let rect = this.getBoundingClientRect();
     let y = Math.abs(e.clientY-rect.top);
     let x = Math.abs(e.clientX-rect.left);
@@ -197,6 +204,9 @@ canvas.onmousemove = function(e){
 
     timeContext.fillStyle = 'rgba(100,100,100,1)';
     timeContext.fillRect(x-70,0,140,20);
+    changeLabels();
+
+
 
 }
 
@@ -209,4 +219,39 @@ canvas.onmouseleave = function(){
 function priceToAxis(maxPrice,minPrice, canvasHeight,price){
     let position = canvasHeight- ((canvasHeight * (price - minPrice))/(maxPrice - minPrice));
     return Math.round(position);
+}
+
+
+function changeLabels(){
+    canvas.onmousedown = function(e){
+    let keyCounter =0;
+    for(let label of labels){
+        let targetName = Object.keys(label)[0];
+
+        let labelPosition = priceToAxis(maxPrice,minPrice,cHeight,label[targetName]);
+
+
+            let rect = this.getBoundingClientRect();
+            let y = Math.abs(e.clientY-rect.top);
+            let x = Math.abs(e.clientX-rect.left);
+            if((y >= (labelPosition-2) && y<=(labelPosition+2)) || (y >= (labelPosition-(labelHeight/2)) && y<=(labelPosition+(labelHeight/2)) && x>=(cWidth-labelWidth) && x<=cWidth)){
+                console.log('yes')
+                canvas.style.cursor = 'pointer';
+                canvas.onmouseup = function(et){
+                    let rect = this.getBoundingClientRect();
+                    let y = Math.abs(et.clientY-rect.top);
+                    let pricePieces = (priceRange)/canvas.height;
+                    let finalPrice = (minPrice+((canvas.height-y)*pricePieces));
+                    console.log(finalPrice.toFixed(2));
+                    canvas.style.cursor = 'crosshair';
+                }
+            }
+
+        }
+
+
+        keyCounter++;
+
+    }
+
 }
