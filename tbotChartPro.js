@@ -191,7 +191,29 @@ canvas.onmousemove = function(e){
     drawThicks();
     context.fillStyle = 'gray';
     context.fillRect(0,y,canvas.width,0.5);
-    context.fillRect(x,0,0.5,canvas.height);
+    let gg =cWidth - (cWidth*rightGap);
+    cCounter = 0;
+    for(let thick of thicks){
+        let rect = this.getBoundingClientRect();
+        let y = Math.abs(e.clientY-rect.top);
+        let x = Math.abs(e.clientX-rect.left);
+        let maxXPos = (gg)+thicksWidth+(thicksGap/2);
+        let minXPos = (gg)-(thicksGap/2);
+
+        if(x <= maxXPos && x >= minXPos){
+            context.fillStyle = 'gray';
+            context.fillRect((gg+(thicksWidth/2)),0,0.5,canvas.height);
+            timeContext.fillStyle = 'rgba(100,100,100,1)';
+            timeContext.fillRect(x-70,0,140,20);
+            timeContext.fillStyle = 'white';
+            timeContext.fillText('Time',x-15,14);
+        }
+
+        gg-=(thicksWidth+thicksGap);
+        cCounter++;
+    }
+    //context.fillRect(x,0,0.5,canvas.height);
+
     position.firstElementChild.nextElementSibling.innerHTML = 'Positions: X= '+ x + '  Y= ' + y;
     let pricePieces = (priceRange)/canvas.height;
     let finalPrice = (minPrice+((canvas.height-y)*pricePieces));
@@ -202,8 +224,7 @@ canvas.onmousemove = function(e){
     priceContext.fillText(finalPrice,7,y+4);
     position.firstElementChild.innerHTML = '  Price: ' + finalPrice;
 
-    timeContext.fillStyle = 'rgba(100,100,100,1)';
-    timeContext.fillRect(x-70,0,140,20);
+
     changeLabels();
 
 
