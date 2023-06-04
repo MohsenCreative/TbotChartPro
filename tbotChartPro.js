@@ -1,3 +1,13 @@
+import { klines } from './variables.js';
+
+
+//document.write('<script src="variables.js" type="text/javascript"></script>');
+
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+/// Start Tbot Chart Pro //////////////////////////////
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
 
 let container = document.querySelector('.main-canvas-div');
 
@@ -5,9 +15,9 @@ let priceCanvas = document.querySelector('.price-canvas');
 let timeCanvas = document.querySelector('.time-canvas');
 let canvas = document.querySelector('.main-canvas');
 
-context = canvas.getContext('2d');
-priceContext = priceCanvas.getContext('2d');
-timeContext = timeCanvas.getContext('2d');
+let context = canvas.getContext('2d');
+let priceContext = priceCanvas.getContext('2d');
+let timeContext = timeCanvas.getContext('2d');
 canvas.style.cursor = 'crosshair';
 priceCanvas.style.cursor = 'ns-resize';
 timeCanvas.style.cursor = 'ew-resize';
@@ -36,7 +46,9 @@ labels.push({'stopLoss':27900.00});
 labels.push({'tp1':28020.00});
 labels.push({'tp2':28100.00});
 
-let thicks = []; // candlestick data
+
+
+let thicks = klines; // candlestick data
 
 thicks.push({open:27971.00, close:27938.00, high:27971.00, low:27936.00});
 thicks.push({open:27959.00, close:27969.00, high:27969.00, low:27904.00});
@@ -55,9 +67,7 @@ thicks.push({open:27944.00, close:27954.00, high:27960.00, low:27907.00});
 thicks.push({open:27936.00, close:27932.00, high:27957.00, low:27913.00});
 
 
-
-
-//thicks.reverse();
+thicks.reverse();
 //////////////////////
 // Constants
 const labelLineHeight = 1; // thick of target lines
@@ -131,7 +141,7 @@ let drawLabels = function(){
 let drawThicks = function(){
     context.clearRect(0, 0, cWidth, cHeight);
     priceContext.clearRect(0, 0, priceCanvas.width, priceCanvas.height);
-    ww = cWidth - (cWidth*rightGap);
+    let ww = cWidth - (cWidth*rightGap);
     for (let thick of thicks){
         let highPosition = priceToAxis(maxPrice,minPrice, cHeight,thick.high);
         let lowPosition = priceToAxis(maxPrice,minPrice, cHeight,thick.low);
@@ -192,7 +202,7 @@ canvas.onmousemove = function(e){
     context.fillStyle = 'gray';
     context.fillRect(0,y,canvas.width,0.5);
     let gg =cWidth - (cWidth*rightGap);
-    cCounter = 0;
+    let cCounter = 0;
     for(let thick of thicks){
         let rect = this.getBoundingClientRect();
         let y = Math.abs(e.clientY-rect.top);
@@ -245,11 +255,11 @@ function priceToAxis(maxPrice,minPrice, canvasHeight,price){
 
 function changeLabels(){
     canvas.onmousedown = function(e){
-    let keyCounter =0;
-    for(let label of labels){
-        let targetName = Object.keys(label)[0];
+        let keyCounter =0;
+        for(let label of labels){
+            let targetName = Object.keys(label)[0];
 
-        let labelPosition = priceToAxis(maxPrice,minPrice,cHeight,label[targetName]);
+            let labelPosition = priceToAxis(maxPrice,minPrice,cHeight,label[targetName]);
 
 
             let rect = this.getBoundingClientRect();
@@ -276,3 +286,7 @@ function changeLabels(){
     }
 
 }
+
+
+
+
