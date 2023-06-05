@@ -11,41 +11,47 @@ body{
     width:100%;
     height:100%;
 }
-.chart-container{
-    margin:20px;
-    width:800px;
-    height:600px;
+#chart-container{
     position:relative;
     background-color:#0d0d0d;
 }
 .chart-table{
+    border-collapse:collapse;
+    position:absolute;
+    top:0;
+    left:0;
     width:100%;
     height:100%;
-    border-collapse:collapse;
 }
-.main-canvas-td, .price-canvas-td{
+.first-row{
     height:100%;
+}
+
+.price-canvas-td, .chart-settings-td, .price-canvas-div{
+    position:relative;
+    width:64px !important;
+}
+.main-canvas-div{
+    position:relative;
+    width:100%;
+    height:100%;
+    background-color:gray;
+}
+.price-canvas-div{
+    position:relative;
+    height:100%;
+    background-color:gray;
+}
+.time-canvas-div{
+    position:relative;
+    background-color:gray;
+}
+.main-canvas, .operators-canvas, .price-canvas, .price-operators-canvas, .time-canvas, .time-operators-canvas{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
 }
 .second-row, .time-canvas-td, .time-canvas-div,.chart-settings-td, .chart-settings-div{
     height:28px;
-}
-.price-canvas-td,.price-canvas-div, .chart-settings-td, .chart-settings-div{
-    width:64px;
-}
-.main-canvas-div, .time-canvas-div{
-    width:100%;
-}
-.price-canvas-div, .chart-settings-div, .main-canvas-div{
-    height:100%;
-}
-.chart-settings-div{
-    width:100%;
-    background-color: #0d0d0d;
-}
-.price-canvas-div, .time-canvas-div{
-    background-color:#0d0d0d;
-}
-.position{
-    margin-top:40px;
-    position:relative;
 }
