@@ -5,6 +5,9 @@
 
 
 let setDimentions = function () {
+    let html = document.getElementsByTagName('body');
+    html.width = window.innerWidth;
+    html.height = window.innerHeight;
     let chartContainer = document.getElementById('chart-container');
     let mainCanvasParent = document.querySelector('.main-canvas-div');
     let mainCanvas = document.querySelector('.main-canvas');

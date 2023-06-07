@@ -5001,4 +5001,10 @@ var klines = [
         "volume": 59.272600000000004
     }
 ]
+
+
+klines.reverse();
+
+
+
 export { klines };
