@@ -5098,8 +5098,8 @@ window.addEventListener('load',function(){
 ////////////////////
 // Variables
         let scale = 0.001;
-        let maxPrice = 27500;
-        let minPrice = 26600.00;
+        let maxPrice = 27000;
+        let minPrice = 26300.00;
         maxPrice = maxPrice+(maxPrice*scale);
         minPrice = minPrice-(minPrice*scale);
         let priceRange = Math.abs(maxPrice - minPrice);
@@ -5390,6 +5390,7 @@ window.addEventListener('load',function(){
 
                 }
 
+                console.log(klines);
                 //console.log(klines);
                 drawThicks();
             }
